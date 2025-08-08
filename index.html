@@ -50,17 +50,10 @@
             color: white;
         }
         
-        .logo .icon {
-            width: 45px;
+        .logo img {
             height: 45px;
-            background: linear-gradient(135deg, #a8e6cf 0%, #dda0dd 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-            font-weight: bold;
+            width: auto;
+            filter: brightness(1.1);
         }
 
         .nav-links {
@@ -90,18 +83,10 @@
         }
         
         .hero-logo {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, #a8e6cf 0%, #dda0dd 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: white;
-            font-weight: bold;
-            margin: 0 auto 2rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 4px 15px rgba(122,155,122,0.3));
         }
 
         .hero::before {
@@ -832,7 +817,7 @@
     <header>
         <nav class="container">
             <div class="logo">
-                <div class="icon">S+</div>
+                <img src="logo2.png.jpg" alt="SlowAging+ 로고" />
                 SlowAging+
             </div>
             <ul class="nav-links">
@@ -850,7 +835,7 @@
     <!-- 히어로 섹션 -->
     <section id="home" class="hero">
         <div class="container">
-            <div class="hero-logo">S+</div>
+            <img src="logo2.png.jpg" alt="SlowAging+ 로고" class="hero-logo" />
             <h1>SlowAging+</h1>
             <p class="tagline">🔥 여러 앱 돌아다니기 그만!</p>
             <p class="subtitle">영양제·화장품·운동·수면을 <strong>하나의 앱</strong>에서 통합 관리하는 최초의 슬로우에이징 플랫폼</p>
