@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlowAging+ | 함께하는 슬로우에이징 플랫폼</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Taebaek, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 헤더 */
+        header {
+            background: linear-gradient(135deg, #7a9b7a 0%, #b8a898 50%, #d4c0a1 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(122,155,122,0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .logo img {
+            height: 45px;
+            width: auto;
+            filter: brightness(1.1);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* 히어로 섹션 */
+        .hero {
+            background: linear-gradient(135deg, #7a9b7a 0%, #b8a898 50%, #d4c0a1 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-logo {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 4px 15px rgba(122,155,122,0.3));
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="25" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="25" cy="75" r="1" fill="rgba(255,255,255,0.06)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero .tagline {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.8;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #b8a898 0%, #d4c0a1 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 20px rgba(184,168,152,0.3);
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #a89888 0%, #c4b091 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(184,168,152,0.4);
+        }
+
+        .cta-button.secondary {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .cta-button.secondary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* 섹션 공통 */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .section .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+
+        /* 현재 상황 섹션 */
+        .current-situation {
+            background: #f8f9fa;
+        }
+        
+        .app-chaos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin: 3rem 0;
+            align-items: center;
+        }
+        
+        .phone-mockup {
+            background: #333;
+            border-radius: 25px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        .app-icons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .app-icon {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 15px 5px;
+            font-size: 1.5rem;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            animation: bounce 2s infinite alternate;
+        }
+        
+        .app-icon span {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+        
+        .chaos-text {
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .chaos-problems h3 {
+            color: #ff6b6b;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+        
+        .chaos-problems ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .chaos-problems li {
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            font-size: 1.1rem;
+        }
+        
+        @keyframes bounce {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+        
+        @media (max-width: 768px) {
+            .app-chaos {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .problem-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+            border-left: 4px solid #b8a898;
+        }
+
+        .problem-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .problem-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .problem-item h3 {
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* 솔루션 섹션 */
+        .solutions {
+            background: linear-gradient(135deg, #7a9b7a 0%, #b8a898 50%, #d4c0a1 100%);
+            color: white;
+        }
+        
+        .integration-visual {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .before h4, .after h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .scattered-apps {
+            margin: 1rem 0;
+            line-height: 1.8;
+        }
+        
+        .scattered-apps span {
+            background: rgba(255,107,107,0.3);
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            margin: 0 2px;
+        }
+        
+        .unified-platform {
+            margin: 1rem 0;
+        }
+        
+        .all-in-one {
+            background: linear-gradient(135deg, #a8e6cf 0%, #dda0dd 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .arrow {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .before-after {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .solution-item {
+            background: rgba(255,255,255,0.1);
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .solution-item:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-5px);
+        }
+
+        .solution-item .icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .solution-item h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 경쟁사 비교 섹션 */
+        .comparison {
+            background: white;
+        }
+        
+        .comparison-table {
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+        
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+        
+        .comparison-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .comparison-table th span {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        .comparison-table .highlight {
+            background: linear-gradient(135deg, #7a9b7a 0%, #b8a898 100%);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .comparison-table td:first-child {
+            background: #f8f9fa;
+            font-weight: bold;
+            text-align: left;
+        }
+        
+        .comparison-summary {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .summary-item {
+            background: linear-gradient(135deg, #7a9b7a 0%, #b8a898 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        /* 특징 섹션 */
+        .features {
+            background: linear-gradient(135deg, #a8e6cf 0%, #dda0dd 50%, #f0c674 100%);
+            color: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-item .icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #7a9b7a 0%, #b8a898 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            color: white;
+        }
+
+        .feature-item h3 {
+            color: #333;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 타겟 고객 섹션 */
+        .target {
+            background: #f8f9fa;
+        }
+
+        .target-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .target-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .target-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .target-item .persona {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .target-item h3 {
+            color: #7a9b7a;
+            margin-bottom: 1rem;
+        }
+
+        /* 수익 모델 섹션 */
+        .revenue {
+            background: linear-gradient(135deg, #d4c0a1 0%, #f0e6d2 100%);
+        }
+
+        .revenue-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .revenue-item {
+            background: rgba(255,255,255,0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .revenue-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .revenue-item h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        /* 연락처/참여 섹션 */
+        .contact {
+            background: linear-gradient(135deg, #7a9b7a 0%, #b8a898 50%, #d4c0a1 100%);
+            color: white;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        /* 푸터 */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* 애니메이션 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .tagline {
+                font-size: 1.2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+
+            .problem-grid,
+            .solution-grid,
+            .features-grid,
+            .target-grid,
+            .revenue-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 스크롤 애니메이션용 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="logo2.png.jpg" alt="SlowAging+ 로고" />
+                SlowAging+
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">홈</a></li>
+                <li><a href="#current-situation">현재상황</a></li>
+                <li><a href="#solutions">솔루션</a></li>
+                <li><a href="#comparison">경쟁사비교</a></li>
+                <li><a href="#features">특징</a></li>
+                <li><a href="#target">타겟</a></li>
+                <li><a href="#contact">참여하기</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 히어로 섹션 -->
+    <section id="home" class="hero">
+        <div class="container">
+            <img src="logo2.png.jpg" alt="SlowAging+ 로고" class="hero-logo" />
+            <h1>SlowAging+</h1>
+            <p class="tagline">🔥 여러 앱 돌아다니기 그만!</p>
+            <p class="subtitle">영양제·화장품·운동·수면을 <strong>하나의 앱</strong>에서 통합 관리하는 최초의 슬로우에이징 플랫폼</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="cta-button">베타 테스트 신청</a>
+                <a href="#solutions" class="cta-button secondary">서비스 알아보기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 현재 상황 섹션 -->
+    <section id="current-situation" class="section current-situation">
+        <div class="container">
+            <h2>지금 이렇게 관리하고 계신가요?</h2>
+            <p class="subtitle">슬로우에이징에 관심 있는 분들의 현실적인 고민들</p>
+            
+            <!-- 파편화된 앱 사용 현황 -->
+            <div class="app-chaos">
+                <div class="chaos-visual fade-in">
+                    <div class="phone-mockup">
+                        <div class="app-icons">
+                            <div class="app-icon">📊<span>필라이즈</span></div>
+                            <div class="app-icon">💄<span>화해</span></div>
+                            <div class="app-icon">🏃‍♀️<span>삼성헬스</span></div>
+                            <div class="app-icon">📱<span>챌린저스</span></div>
+                            <div class="app-icon">📸<span>인스타그램</span></div>
+                            <div class="app-icon">💬<span>네이버카페</span></div>
+                        </div>
+                        <p class="chaos-text">😵‍💫 여러 앱을 돌아다니며<br>정보를 조각조각 관리 중...</p>
+                    </div>
+                </div>
+                
+                <div class="chaos-problems">
+                    <h3>이런 불편함 겪어보셨죠?</h3>
+                    <ul>
+                        <li>✅ 영양제는 필라이즈, 화장품은 화해... 앱만 6개</li>
+                        <li>✅ 각각 따로 기록하니까 전체적인 패턴을 모르겠음</li>
+                        <li>✅ 궁금한 게 있어도 어느 커뮤니티에서 물어봐야 할지</li>
+                        <li>✅ 내가 쓰는 영양제가 피부에 도움 되는지 연결점을 모름</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="problem-grid">
+                <div class="problem-item fade-in">
+                    <div class="icon">📱</div>
+                    <h3>파편화된 관리의 한계</h3>
+                    <p>영양제 앱, 화장품 앱, 운동 앱을 따로 써야 해서 종합적인 인사이트를 얻기 어려워요. 내 데이터가 흩어져 있어요.</p>
+                </div>
+                <div class="problem-item fade-in">
+                    <div class="icon">🔄</div>
+                    <h3>앱 간 이동의 피로감</h3>
+                    <p>하루에 5-6개 앱을 돌아다니며 기록하고 확인하는 것 자체가 스트레스. 이것만으로도 지쳐요.</p>
+                </div>
+                <div class="problem-item fade-in">
+                    <div class="icon">❓</div>
+                    <h3>연관성 파악의 어려움</h3>
+                    <p>"비타민C를 먹기 시작한 뒤 피부가 좋아졌나?" 같은 연관성을 스스로 찾아내기 어려워요.</p>
+                </div>
+                <div class="problem-item fade-in">
+                    <div class="icon">👥</div>
+                    <h3>분산된 커뮤니티</h3>
+                    <p>영양제 질문은 여기, 피부 고민은 저기... 같은 슬로우에이징 목표인데 소통이 분산되어 있어요.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 솔루션 섹션 -->
+    <section id="solutions" class="section solutions">
+        <div class="container">
+            <h2>SlowAging+가 모든 것을 하나로!</h2>
+            <p class="subtitle">파편화된 관리의 불편함을 해결하는 통합 슬로우에이징 플랫폼</p>
+            
+            <!-- 차별화 포인트 강조 -->
+            <div class="integration-visual fade-in">
+                <div class="before-after">
+                    <div class="before">
+                        <h4>❌ 지금 (파편화)</h4>
+                        <div class="scattered-apps">
+                            <span>필라이즈</span> + <span>화해</span> + <span>삼성헬스</span> + <span>챌린저스</span> + <span>인스타</span>
+                        </div>
+                        <p>5-6개 앱을 돌아다니며 관리</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="after">
+                        <h4>✅ SlowAging+ (통합)</h4>
+                        <div class="unified-platform">
+                            <span class="all-in-one">SlowAging+</span>
+                        </div>
+                        <p>모든 기능이 하나의 플랫폼에!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="solution-grid">
+                <div class="solution-item fade-in">
+                    <div class="icon">🎯</div>
+                    <h3>올인원 통합 관리</h3>
+                    <p><strong>영양제·화장품·운동·수면</strong>을 하나의 앱에서! 더 이상 여러 앱을 돌아다니지 마세요.</p>
+                </div>
+                <div class="solution-item fade-in">
+                    <div class="icon">🔗</div>
+                    <h3>연관성 자동 분석</h3>
+                    <p>"비타민C 복용 후 피부 개선도 85%" 같은 <strong>데이터 간 연관성</strong>을 AI가 자동으로 찾아서 알려드려요.</p>
+                </div>
+                <div class="solution-item fade-in">
+                    <div class="icon">👥</div>
+                    <h3>슬로우에이징 전용 커뮤니티</h3>
+                    <p>같은 목표를 가진 사람들과 한곳에서 소통! 영양제부터 화장품까지 모든 고민을 <strong>통합 커뮤니티</strong>에서 해결하세요.</p>
+                </div>
+                <div class="solution-item fade-in">
+                    <div class="icon">📊</div>
+                    <h3>종합 인사이트 리포트</h3>
+                    <p>흩어져 있던 데이터를 종합해서 <strong>"나만의 슬로우에이징 패턴"</strong>을 발견하고 개선 방향을 제시해요.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 경쟁사 비교 섹션 -->
+    <section id="comparison" class="section comparison">
+        <div class="container">
+            <h2>기존 앱들과 뭐가 다른가요?</h2>
+            <p class="subtitle">파편화된 솔루션 vs 통합 솔루션</p>
+            
+            <div class="comparison-table fade-in">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>필라이즈<br><span>(영양제 전문)</span></th>
+                            <th>화해<br><span>(화장품 전문)</span></th>
+                            <th>챌린저스<br><span>(습관 형성)</span></th>
+                            <th class="highlight">SlowAging+<br><span>(통합 솔루션)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>관리 영역</td>
+                            <td>영양제만</td>
+                            <td>화장품만</td>
+                            <td>습관 형성만</td>
+                            <td class="highlight">영양·피부·운동·수면 통합</td>
+                        </tr>
+                        <tr>
+                            <td>데이터 연관성</td>
+                            <td>❌ 분야 내에서만</td>
+                            <td>❌ 분야 내에서만</td>
+                            <td>❌ 습관 달성 여부만</td>
+                            <td class="highlight">✅ 분야 간 연관성 분석</td>
+                        </tr>
+                        <tr>
+                            <td>커뮤니티</td>
+                            <td>제한적</td>
+                            <td>화장품 리뷰 중심</td>
+                            <td>챌린지 중심</td>
+                            <td class="highlight">슬로우에이징 전용 통합</td>
+                        </tr>
+                        <tr>
+                            <td>타겟 고객</td>
+                            <td>영양제 관심층</td>
+                            <td>화장품 관심층</td>
+                            <td>습관 개선 희망자</td>
+                            <td class="highlight">슬로우에이징 전체 고객</td>
+                        </tr>
+                        <tr>
+                            <td>사용자 편의성</td>
+                            <td colspan="3">여러 앱 설치 및 관리 필요</td>
+                            <td class="highlight">하나의 앱으로 완결</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="comparison-summary">
+                <h3>🎯 SlowAging+만의 차별점</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <strong>"슬로우에이징"</strong><br>
+                        최초의 전문 플랫폼
+                    </div>
+                    <div class="summary-item">
+                        <strong>완전한 통합</strong><br>
+                        One-Stop 솔루션
+                    </div>
+                    <div class="summary-item">
+                        <strong>스마트 분석</strong><br>
+                        분야 간 연관성 발견
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 핵심 기능 섹션 -->
+    <section id="features" class="section features">
+        <div class="container">
+            <h2>핵심 기능</h2>
+            <p class="subtitle">파편화된 관리를 하나로 통합하는 스마트한 기능들</p>
+            <div class="features-grid">
+                <div class="feature-item fade-in">
+                    <div class="icon">📝</div>
+                    <h3>맞춤형 트래커</h3>
+                    <p>내 목표에 맞는 기록 항목을 설정하고, 쉽고 재미있게 일상을 기록해요. 물 섭취량부터 스킨케어까지!</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <div class="icon">🏆</div>
+                    <h3>챌린지 & 퀘스트</h3>
+                    <p>'콜라겐 30일 챌린지', '설탕 끊기 퀘스트' 등 함께 도전할 목표를 제시하고 성취감을 느껴요.</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <div class="icon">💬</div>
+                    <h3>커뮤니티 피드</h3>
+                    <p>다른 사람들의 기록을 보고 응원하고, 궁금한 점을 질문하고 경험을 공유해요.</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <div class="icon">👨‍⚕️</div>
+                    <h3>전문가 Q&A</h3>
+                    <p>의사, 약사, 영양사 등 검증된 전문가에게 직접 질문하고 신뢰할 수 있는 답변을 받아요.</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <div class="icon">📊</div>
+                    <h3>인사이트 리포트</h3>
+                    <p>내 데이터를 분석한 맞춤형 리포트로 개선점을 발견하고 더 나은 방향을 찾아요.</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <div class="icon">🛒</div>
+                    <h3>신뢰 마켓플레이스</h3>
+                    <p>커뮤니티에서 검증된 제품들을 안전하게 구매하고, 실제 후기를 바탕으로 선택해요.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 타겟 고객 섹션 -->
+    <section id="target" class="section target">
+        <div class="container">
+            <h2>누구를 위한 서비스인가요?</h2>
+            <p class="subtitle">슬로우에이징에 관심 있는 모든 분들, 특히</p>
+            <div class="target-grid">
+                <div class="target-item fade-in">
+                    <div class="persona">👩‍💼</div>
+                    <h3>3040 여성</h3>
+                    <p>피부 노화가 시작되어 체계적인 안티에이징 관리를 원하는 직장인 여성</p>
+                </div>
+                <div class="target-item fade-in">
+                    <div class="persona">🏃‍♂️</div>
+                    <h3>건강 관심족</h3>
+                    <p>영양제, 운동, 건강한 식습관 등에 관심이 많지만 혼자서는 지속하기 어려운 분들</p>
+                </div>
+                <div class="target-item fade-in">
+                    <div class="persona">👨‍⚕️</div>
+                    <h3>전문가 그룹</h3>
+                    <p>신뢰할 수 있는 정보를 제공하고 싶은 의료진, 영양사, 트레이너 등 헬스케어 전문가</p>
+                </div>
+                <div class="target-item fade-in">
+                    <div class="persona">👥</div>
+                    <h3>기업 임직원</h3>
+                    <p>직원 웰니스 프로그램을 도입하려는 기업의 인사팀과 임직원들</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 수익 모델 섹션 -->
+    <section id="revenue" class="section revenue">
+        <div class="container">
+            <h2>지속가능한 비즈니스 모델</h2>
+            <p class="subtitle">사용자에게 가치를 제공하면서 건강한 성장을 추구합니다</p>
+            <div class="revenue-grid">
+                <div class="revenue-item fade-in">
+                    <div class="icon">💎</div>
+                    <h3>프리미엄 구독</h3>
+                    <p>기본 기능은 무료, AI 분석 리포트와 전문가 1:1 상담은 월 구독으로 제공</p>
+                </div>
+                <div class="revenue-item fade-in">
+                    <div class="icon">🛍️</div>
+                    <h3>마켓플레이스</h3>
+                    <p>검증된 건강기능식품, 화장품 등을 판매하고 수수료 수익 창출</p>
+                </div>
+                <div class="revenue-item fade-in">
+                    <div class="icon">🏢</div>
+                    <h3>B2B 솔루션</h3>
+                    <p>기업 임직원 웰니스 프로그램으로 플랫폼을 공급하는 기업 솔루션</p>
+                </div>
+                <div class="revenue-item fade-in">
+                    <div class="icon">📈</div>
+                    <h3>데이터 인사이트</h3>
+                    <p>익명화된 트렌드 데이터를 기반으로 한 시장 분석 리포트 판매</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 참여/연락 섹션 -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <h2>SlowAging+ 베타테스트에 참여하세요!</h2>
+            <p class="subtitle">함께 만들어가는 슬로우에이징 플랫폼, 여러분의 의견이 필요합니다</p>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">이름</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">이메일</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">연령대</label>
+                        <select id="age" name="age" required>
+                            <option value="">선택해주세요</option>
+                            <option value="20s">20대</option>
+                            <option value="30s">30대</option>
+                            <option value="40s">40대</option>
+                            <option value="50s">50대</option>
+                            <option value="60s+">60대 이상</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="interest">관심 분야 (복수 선택 가능)</label>
+                        <select id="interest" name="interest" required>
+                            <option value="">선택해주세요</option>
+                            <option value="skincare">피부 관리</option>
+                            <option value="nutrition">영양/식습관</option>
+                            <option value="exercise">운동/피트니스</option>
+                            <option value="supplements">영양제/건기식</option>
+                            <option value="sleep">수면 관리</option>
+                            <option value="stress">스트레스 관리</option>
+                            <option value="all">모든 분야</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">참여 유형</label>
+                        <select id="role" name="role" required>
+                            <option value="">선택해주세요</option>
+                            <option value="user">일반 사용자</option>
+                            <option value="expert">전문가</option>
+                            <option value="corporate">기업 담당자</option>
+                            <option value="investor">투자 관심자</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">궁금한 점이나 제안사항</label>
+                        <textarea id="message" name="message" placeholder="SlowAging+에 대해 궁금한 점이나 기대하는 기능, 제안사항을 자유롭게 남겨주세요."></textarea>
+                    </div>
+                    <button type="submit" class="cta-button" style="width: 100%;">베타테스트 신청하기</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 SlowAging+. 함께하는 건강한 노화, 지속가능한 웰니스 라이프스타일</p>
+            <p>더 나은 내일을 위한 오늘의 선택</p>
+        </div>
+    </footer>
+
+    <script>
+        // 부드러운 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 폼 제출 처리
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            console.log('Beta test application:', data);
+            
+            alert('베타테스트 신청이 완료되었습니다! 선정되시면 빠른 시일 내에 연락드리겠습니다. 감사합니다! 🌱');
+            this.reset();
+        });
+
+        // 스크롤 애니메이션
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // 애니메이션 대상 요소들 관찰
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 파티클 효과 (선택사항)
+        function createParticles() {
+            const hero = document.querySelector('.hero');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 2px;
+                    height: 2px;
+                    background: rgba(255,255,255,0.5);
+                    border-radius: 50%;
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    animation: float ${3 + Math.random() * 4}s ease-in-out infinite;
+                    animation-delay: ${Math.random() * 2}s;
+                `;
+                hero.appendChild(particle);
+            }
+        }
+
+        // CSS 애니메이션 추가
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px) rotate(0deg); }
+                50% { transform: translateY(-20px) rotate(180deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 페이지 로드 시 파티클 생성
+        window.addEventListener('load', createParticles);
+    </script>
+</body>
+</html>
