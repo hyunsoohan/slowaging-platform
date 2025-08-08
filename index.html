@@ -52,7 +52,12 @@
         
         .logo img {
             height: 45px;
-            width: auto;
+            width: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dda0dd 50%, #f0c674 100%);
+            padding: 8px;
+            box-shadow: 0 4px 15px rgba(122,155,122,0.3);
             filter: brightness(1.1);
         }
 
@@ -83,10 +88,20 @@
         }
         
         .hero-logo {
-            max-width: 150px;
-            height: auto;
-            margin-bottom: 2rem;
-            filter: drop-shadow(0 4px 15px rgba(122,155,122,0.3));
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dda0dd 50%, #f0c674 100%);
+            padding: 15px;
+            margin: 0 auto 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            filter: brightness(1.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .hero-logo:hover {
+            transform: scale(1.05);
         }
 
         .hero::before {
