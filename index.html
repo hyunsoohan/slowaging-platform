@@ -1008,7 +1008,7 @@
             <h2>SlowAging+ 베타테스트에 참여하세요!</h2>
             <p class="subtitle">함께 만들어가는 슬로우에이징 플랫폼, 여러분의 의견이 필요합니다</p>
             <div class="contact-form">
-                <form id="contactForm">
+                <form id="contactForm" action="https://formspree.io/f/mwpqwazw" method="POST">
                     <div class="form-group">
                         <label for="name">이름</label>
                         <input type="text" id="name" name="name" required>
@@ -1055,6 +1055,12 @@
                         <label for="message">궁금한 점이나 제안사항</label>
                         <textarea id="message" name="message" placeholder="SlowAging+에 대해 궁금한 점이나 기대하는 기능, 제안사항을 자유롭게 남겨주세요."></textarea>
                     </div>
+                    
+                    <!-- Formspree 설정 필드들 -->
+                    <input type="hidden" name="_next" value="https://slowaging.app/#contact">
+                    <input type="hidden" name="_subject" value="SlowAging+ 베타테스트 신청">
+                    <input type="hidden" name="_captcha" value="false">
+                    
                     <button type="submit" class="cta-button" style="width: 100%;">베타테스트 신청하기</button>
                 </form>
             </div>
@@ -1084,21 +1090,7 @@
             });
         });
 
-        // 폼 제출 처리
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const data = {};
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
-            }
-            
-            console.log('Beta test application:', data);
-            
-            alert('베타테스트 신청이 완료되었습니다! 선정되시면 빠른 시일 내에 연락드리겠습니다. 감사합니다! 🌱');
-            this.reset();
-        });
+        // Formspree handles form submission automatically
 
         // 스크롤 애니메이션
         const observerOptions = {
