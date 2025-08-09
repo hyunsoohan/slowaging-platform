@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlowAging+ | 함께하는 슬로우에이징 플랫폼 - 베타테스트 신청</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Taebaek, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 헤더 */
+        header {
+            background: linear-gradient(135deg, #7a9b7a 0%, #b8a898 50%, #d4c0a1 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(122,155,122,0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo-circle {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #4ade80, #a855f7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* 히어로 섹션 */
+        .hero {
+            background: linear-gradient(135deg, #7a9b7a 0%, #b8a898 50%, #d4c0a1 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="25" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="25" cy="75" r="1" fill="rgba(255,255,255,0.06)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #4ade80, #a855f7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero .tagline {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #b8a898 0%, #d4c0a1 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 20px rgba(184,168,152,0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(184,168,152,0.4);
+        }
+
+        .cta-button.secondary {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        /* 섹션 공통 */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .section .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+
+        /* 현재 상황 섹션 */
+        .current-situation {
+            background: #f8f9fa;
+        }
+        
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .problem-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .problem-item .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .problem-item h3 {
+            color: #d73527;
+            margin-bottom: 1rem;
+        }
+
+        /* 솔루션 섹션 */
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .solution-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .solution-item .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .solution-item h3 {
+            color: #7a9b7a;
+            margin-bottom: 1rem;
+        }
+
+        /* 비교 테이블 */
+        .comparison {
+            background: #f8f9fa;
+        }
+
+        .comparison-table {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comparison-table th {
+            background: #7a9b7a;
+            color: white;
+        }
+
+        .comparison-table .highlight {
+            background: linear-gradient(135deg, #7a9b7a, #b8a898);
+            color: white;
+            font-weight: bold;
+        }
+
+        /* 기능 섹션 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-item .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 타겟 섹션 */
+        .targets {
+            background: #f8f9fa;
+        }
+
+        .targets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .target-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .target-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 베타 신청 섹션 */
+        .beta-signup {
+            background: linear-gradient(135deg, #f0f8f0 0%, #f8f0f8 50%, #f8f8f0 100%);
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #7c3aed;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #7a9b7a 0%, #b8a898 50%, #d4c0a1 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(122,155,122,0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .success {
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            color: #16a34a;
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+            color: #dc2626;
+        }
+
+        /* 푸터 */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 애니메이션 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <div class="logo-circle">S+</div>
+                SlowAging+
+            </div>
+            <ul class="nav-links">
+                <li><a href="#problems">문제점</a></li>
+                <li><a href="#solution">솔루션</a></li>
+                <li><a href="#features">기능</a></li>
+                <li><a href="#signup">베타신청</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 히어로 섹션 -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-logo">S+</div>
+            <h1>SlowAging+</h1>
+            <p class="tagline">🔥 여러 앱 돌아다니기 그만!</p>
+            <p class="subtitle">영양제·화장품·운동·수면을 하나의 앱에서 통합 관리하는 최초의 슬로우에이징 플랫폼</p>
+            <div class="cta-buttons">
+                <a href="#signup" class="cta-button">🚀 베타테스트 신청하기</a>
+                <a href="#problems" class="cta-button secondary">자세히 알아보기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 현재 상황 섹션 -->
+    <section id="problems" class="section current-situation">
+        <div class="container">
+            <h2>이런 고민, 있으시죠?</h2>
+            <p class="subtitle">슬로우에이징을 위한 앱들이 너무 많아서 오히려 관리가 어려워요</p>
+            
+            <div class="problems-grid">
+                <div class="problem-item fade-in">
+                    <div class="icon">📱</div>
+                    <h3>앱이 너무 많아요!</h3>
+                    <p><strong>영양제는 필라이즈, 화장품은 화해, 운동은 나이키, 수면은 슬립사이클...</strong><br>
+                    매일 5-6개 앱을 켜야 하는 번거로움!</p>
+                </div>
+                <div class="problem-item fade-in">
+                    <div class="icon">🔄</div>
+                    <h3>데이터가 분산되어 있어요</h3>
+                    <p><strong>영양제 복용 → 피부 상태 → 수면 질</strong><br>
+                    서로 연관된 데이터들이 각각의 앱에 흩어져 있어서 전체적인 패턴을 알기 어려워요</p>
+                </div>
+                <div class="problem-item fade-in">
+                    <div class="icon">😵</div>
+                    <h3>관리가 복잡해요</h3>
+                    <p><strong>앱마다 다른 UI, 다른 기록 방식</strong><br>
+                    매번 새로 익혀야 하고, 데이터 백업도 따로따로... 너무 복잡해요!</p>
+                </div>
+                <div class="problem-item fade-in">
+                    <div class="icon">❓</div>
+                    <h3>통합적인 인사이트가 없어요</h3>
+                    <p><strong>"내가 잘하고 있는 걸까?"</strong><br>
+                    각 앱에서 개별적인 피드백만 받다보니 전체적인 슬로우에이징 상태를 알 수 없어요</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 솔루션 섹션 -->
+    <section id="solution" class="section">
+        <div class="container">
+            <h2>SlowAging+가 해결합니다!</h2>
+            <p class="subtitle">하나의 앱에서 모든 슬로우에이징 활동을 통합 관리</p>
+            
+            <div class="solutions-grid">
+                <div class="solution-item fade-in">
+                    <div class="icon">🎯</div>
+                    <h3>올인원 통합 플랫폼</h3>
+                    <p><strong>영양제 · 화장품 · 운동 · 수면</strong>을 하나의 앱에서! 더 이상 여러 앱을 왔다갔다 할 필요 없어요.</p>
+                </div>
+                <div class="solution-item fade-in">
+                    <div class="icon">📊</div>
+                    <h3>스마트 데이터 연결</h3>
+                    <p><strong>"비타민C 복용 → 피부 상태 개선 → 수면 질 향상"</strong><br>
+                    분야별 데이터를 연결해서 나만의 슬로우에이징 패턴을 발견해요.</p>
+                </div>
+                <div class="solution-item fade-in">
+                    <div class="icon">👥</div>
+                    <h3>슬로우에이징 전용 커뮤니티</h3>
+                    <p>같은 목표를 가진 사람들과 한곳에서 소통! 영양제부터 화장품까지 모든 고민을 <strong>통합 커뮤니티</strong>에서 해결하세요.</p>
+                </div>
+                <div class="solution-item fade-in">
+                    <div class="icon">💡</div>
+                    <h3>종합 인사이트 리포트</h3>
+                    <p>흩어져 있던 데이터를 종합해서 <strong>"나만의 슬로우에이징 패턴"</strong>을 발견하고 개선 방향을 제시해요.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 경쟁사 비교 섹션 -->
+    <section id="comparison" class="section comparison">
+        <div class="container">
+            <h2>기존 앱들과 뭐가 다른가요?</h2>
+            <p class="subtitle">파편화된 솔루션 vs 통합 솔루션</p>
+            
+            <div class="comparison-table fade-in">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>필라이즈<br><span>(영양제 전문)</span></th>
+                            <th>화해<br><span>(화장품 전문)</span></th>
+                            <th>챌린저스<br><span>(습관 형성)</span></th>
+                            <th class="highlight">SlowAging+<br><span>(통합 솔루션)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>관리 영역</td>
+                            <td>영양제만</td>
+                            <td>화장품만</td>
+                            <td>습관 형성만</td>
+                            <td class="highlight">영양·피부·운동·수면 통합</td>
+                        </tr>
+                        <tr>
+                            <td>데이터 연관성</td>
+                            <td>❌ 분야 내에서만</td>
+                            <td>❌ 분야 내에서만</td>
+                            <td>❌ 습관 달성 여부만</td>
+                            <td class="highlight">✅ 분야 간 연관성 분석</td>
+                        </tr>
+                        <tr>
+                            <td>커뮤니티</td>
+                            <td>제한적</td>
+                            <td>화장품 리뷰 중심</td>
+                            <td>챌린지 중심</td>
+                            <td class="highlight">슬로우에이징 전용 통합</td>
+                        </tr>
+                        <tr>
+                            <td>사용자 편의성</td>
+                            <td colspan="3">여러 앱 설치 및 관리 필요</td>
+                            <td class="highlight">하나의 앱으로 완결</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 핵심 기능 섹션 -->
+    <section id="features" class="section features">
+        <div class="container">
+            <h2>핵심 기능</h2>
+            <p class="subtitle">파편화된 관리를 하나로 통합하는 스마트한 기능들</p>
+            <div class="features-grid">
+                <div class="feature-item fade-in">
+                    <div class="icon">📝</div>
+                    <h3>맞춤형 트래커</h3>
+                    <p>내 목표에 맞는 기록 항목을 설정하고, 쉽고 재미있게 일상을 기록해요. 물 섭취량부터 스킨케어까지!</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <div class="icon">🔗</div>
+                    <h3>스마트 연관성 분석</h3>
+                    <p>영양제 복용과 피부 상태, 운동과 수면 질의 상관관계를 AI가 분석해서 개인화된 인사이트를 제공해요.</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <div class="icon">👥</div>
+                    <h3>슬로우에이징 커뮤니티</h3>
+                    <p>같은 고민을 가진 사람들과 정보를 공유하고, 전문가의 조언도 받을 수 있어요.</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <div class="icon">📊</div>
+                    <h3>종합 대시보드</h3>
+                    <p>내 슬로우에이징 현황을 한눈에 파악하고, 개선이 필요한 부분을 쉽게 찾을 수 있어요.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 타겟 고객 섹션 -->
+    <section class="section targets">
+        <div class="container">
+            <h2>이런 분들께 추천해요</h2>
+            <p class="subtitle">SlowAging+가 가장 도움될 분들</p>
+            
+            <div class="targets-grid">
+                <div class="target-item fade-in">
+                    <div class="icon">💼</div>
+                    <h3>바쁜 직장인</h3>
+                    <p>여러 앱 관리할 시간 없고, 효율적으로 건강 관리하고 싶은 분</p>
+                </div>
+                <div class="target-item fade-in">
+                    <div class="icon">🏃‍♀️</div>
+                    <h3>웰니스 관심층</h3>
+                    <p>이미 영양제, 스킨케어, 운동을 하고 있지만 체계적으로 관리하고 싶은 분</p>
+                </div>
+                <div class="target-item fade-in">
+                    <div class="icon">📈</div>
+                    <h3>데이터 기반 관리 선호자</h3>
+                    <p>단순 기록이 아닌, 분석과 인사이트로 개선하고 싶은 분</p>
+                </div>
+                <div class="target-item fade-in">
+                    <div class="icon">👨‍⚕️</div>
+                    <h3>예방의학 관심자</h3>
+                    <p>노화 방지와 건강한 생활습관에 관심이 많은 분</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 베타 신청 섹션 -->
+    <section id="signup" class="section beta-signup">
+        <div class="container">
+            <h2>🚀 SlowAging+ 베타테스트 신청</h2>
+            <p class="subtitle">출시 전 먼저 체험하고, 더 나은 서비스 만들기에 함께 참여해주세요!</p>
+            
+            <div class="form-container">
+                <div id="message" class="message" style="display: none;"></div>
+                
+                <form id="betaForm">
+                    <div class="form-group">
+                        <label for="name">이름 *</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">이메일 *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age_group">연령대 *</label>
+                        <select id="age_group" required>
+                            <option value="">선택해주세요</option>
+                            <option value="20s">20대</option>
+                            <option value="30s">30대</option>
+                            <option value="40s">40대</option>
+                            <option value="50s">50대</option>
+                            <option value="60s+">60대 이상</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>관심 분야 (복수 선택 가능)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="skincare" value="skincare">
+                                <label for="skincare">피부 관리</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="nutrition" value="nutrition">
+                                <label for="nutrition">영양/식습관</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="exercise" value="exercise">
+                                <label for="exercise">운동/피트니스</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="supplements" value="supplements">
+                                <label for="supplements">영양제/건기식</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="sleep" value="sleep">
+                                <label for="sleep">수면 관리</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="stress" value="stress">
+                                <label for="stress">스트레스 관리</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="role_type">참여 유형 *</label>
+                        <select id="role_type" required>
+                            <option value="">선택해주세요</option>
+                            <option value="user">일반 사용자</option>
+                            <option value="expert">전문가</option>
+                            <option value="corporate">기업 담당자</option>
+                            <option value="investor">투자 관심자</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">궁금한 점이나 제안사항</label>
+                        <textarea id="message" rows="4" placeholder="SlowAging+에 대해 궁금한 점이나 기대하는 기능, 제안사항을 자유롭게 남겨주세요."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">🚀 베타테스트 신청하기</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 SlowAging+. 함께하는 건강한 노화, 지속가능한 웰니스 라이프스타일</p>
+            <p style="margin-top: 1rem; opacity: 0.7;">더 나은 내일을 위한 오늘의 선택</p>
+        </div>
+    </footer>
+
+    <script>
+        // Supabase 설정
+        const supabaseUrl = 'https://lwdhrvffspuqxfpcueex.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3ZGhydmZmc3B1cXhmcGN1ZWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ2NjE3MjgsImV4cCI6MjA3MDIzNzcyOH0.2zwwhePxDOIk5E4Cmqj915KVnMTuZR_tyTt7x-vbn80'
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
+
+        // 부드러운 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 베타 신청 폼 처리
+        document.getElementById('betaForm').addEventListener('submit', async (e) => {
+            e.preventDefault()
+            
+            const submitBtn = document.querySelector('.submit-btn')
+            const messageDiv = document.getElementById('message')
+            
+            submitBtn.disabled = true
+            submitBtn.textContent = '신청 중...'
+            
+            try {
+                // 관심 분야 수집
+                const interests = []
+                document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                    interests.push(cb.value)
+                })
+                
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    age_group: document.getElementById('age_group').value,
+                    interests: interests,
+                    role_type: document.getElementById('role_type').value,
+                    message: document.getElementById('message').value,
+                    status: 'pending',
+                    email_verified: false,
+                    phone_verified: false
+                }
+                
+                console.log('Submitting:', formData)
+                
+                const { data, error } = await supabase
+                    .from('beta_applications')
+                    .insert([formData])
+                
+                if (error) throw error
+                
+                // 성공 메시지
+                messageDiv.className = 'message success'
+                messageDiv.innerHTML = '✅ <strong>베타테스트 신청이 완료되었습니다!</strong><br>선정되시면 빠른 시일 내에 연락드리겠습니다. 감사합니다! 🎉'
+                messageDiv.style.display = 'block'
+                
+                // 폼 초기화
+                document.getElementById('betaForm').reset()
+                
+                // 성공 후 폼을 위로 스크롤
+                messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                
+            } catch (error) {
+                console.error('Error:', error)
+                messageDiv.className = 'message error'
+                messageDiv.innerHTML = '❌ <strong>신청 중 오류가 발생했습니다.</strong><br>잠시 후 다시 시도해주세요.'
+                messageDiv.style.display = 'block'
+            } finally {
+                submitBtn.disabled = false
+                submitBtn.textContent = '🚀 베타테스트 신청하기'
+            }
+        })
+
+        // 스크롤 애니메이션
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
